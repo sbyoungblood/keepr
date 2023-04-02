@@ -36,6 +36,12 @@ public class KeepsService
     return keep;
   }
 
+  internal List<VaultedKeep> GetKeepsByVault(int vaultId)
+  {
+    List<VaultedKeep> vaultedKeeps = _repo.GetKeepsByVault(vaultId);
+    return vaultedKeeps;
+  }
+
   internal Keep UpdateKeep(Keep updateData)
   {
     Keep original = this.GetKeepById(updateData.Id);

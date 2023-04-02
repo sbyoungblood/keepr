@@ -27,7 +27,7 @@ public class VaultsRepository
   {
     string sql = @"
     DELETE FROM vaults
-    WHERE id = @id
+    WHERE id = @id;
     ";
     int rows = _db.Execute(sql, new { id });
     return rows;

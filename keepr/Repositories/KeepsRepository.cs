@@ -68,6 +68,27 @@ public class KeepsRepository
     return keep;
   }
 
+  internal List<VaultedKeep> GetKeepsByVault(int vaultId)
+  {
+    string sql = @"
+    SELECT
+    kp.*,
+    vk.*, 
+    creator.*
+    FROM vaultKeeps vk
+    JOIN keeps kp ON vk.keepId = kp.Id
+    JOIN accounts creator ON kp.creatorId = creator.Id
+    WHERE vk.vaultId = @vaultId;
+    ";
+    List<VaultedKeep> vaultedKeeps = _db.Query<VaultedKeep, VaultKeep, Profile, VaultedKeep>(sql, (vaultedKeep, vaultKeep, profile) =>
+    {
+      vaultedKeep.Creator = profile;
+      vaultedKeep.VaultKeepId = vaultKeep.Id;
+      return vaultedKeep;
+    }, new { vaultId }).ToList();
+    return vaultedKeeps;
+  }
+
   internal int UpdateData(Keep updateData)
   {
     string sql = @"
