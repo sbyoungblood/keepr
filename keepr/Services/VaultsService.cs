@@ -23,16 +23,24 @@ public class VaultsService
     return $"{vault.Name} was deleted.";
   }
 
+  internal List<Vault> GetMyVaults(string accountId)
+  {
+    List<Vault> vaults = _repo.GetMyVaults(accountId);
+    return vaults;
+  }
+
   internal Vault GetVaultById(int id)
   {
     Vault vault = _repo.GetVaultById(id);
     if (vault == null) throw new Exception($"Sorry, couldn't find a vault at id {id}");
+    if (vault.IsPrivate == true) throw new Exception($"Sorry, vault {id} is a private vault.");
     return vault;
   }
 
-  internal Vault UpdateVault(Vault updateData)
+  internal Vault UpdateVault(Vault updateData, string userId)
   {
     Vault original = this.GetVaultById(updateData.Id);
+    if (original.CreatorId != userId) throw new Exception("Sorry, that aint your vault.");
     original.Name = updateData.Name == null ? original.Name : updateData.Name;
     original.IsPrivate = updateData.IsPrivate;
     _repo.UpdateVault(original);

@@ -3,10 +3,12 @@ namespace keepr.Services;
 public class KeepsService
 {
   private readonly KeepsRepository _repo;
+  private readonly VaultsService _vaultsService;
 
-  public KeepsService(KeepsRepository repo)
+  public KeepsService(KeepsRepository repo, VaultsService vaultsService)
   {
     _repo = repo;
+    _vaultsService = vaultsService;
   }
 
   internal Keep CreateKeep(Keep keepData)
@@ -38,13 +40,16 @@ public class KeepsService
 
   internal List<VaultedKeep> GetKeepsByVault(int vaultId)
   {
+    Vault vault = _vaultsService.GetVaultById(vaultId);
+    if (vault.IsPrivate == true) throw new Exception($"Sorry, that vault is private.");
     List<VaultedKeep> vaultedKeeps = _repo.GetKeepsByVault(vaultId);
     return vaultedKeeps;
   }
 
-  internal Keep UpdateKeep(Keep updateData)
+  internal Keep UpdateKeep(Keep updateData, string userId)
   {
     Keep original = this.GetKeepById(updateData.Id);
+    if (original.CreatorId != userId) throw new Exception("Sorry, that aint your keep.");
     original.Name = updateData.Name == null ? original.Name : updateData.Name;
     original.Description = updateData.Description == null ? original.Description : updateData.Description;
     _repo.UpdateData(original);

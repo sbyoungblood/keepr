@@ -69,7 +69,7 @@ public class KeepsController : ControllerBase
       Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
       updateData.CreatorId = userInfo.Id;
       updateData.Id = id;
-      Keep keep = _keepsService.UpdateKeep(updateData);
+      Keep keep = _keepsService.UpdateKeep(updateData, userInfo.Id);
       return Ok(keep);
     }
     catch (Exception e)

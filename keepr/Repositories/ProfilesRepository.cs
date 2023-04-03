@@ -9,6 +9,18 @@ public class ProfilesRepository
     _db = db;
   }
 
+  internal Profile GetUserProfile(string id)
+  {
+    string sql = @"
+    SELECT
+    prof.*
+    FROM accounts prof
+    WHERE prof.id = @id;
+    ";
+    Profile userProfile = _db.Query<Profile>(sql, new { id }).FirstOrDefault();
+    return userProfile;
+  }
+
   internal List<Keep> GetUserKeeps(string id)
   {
     string sql = @"
@@ -27,15 +39,21 @@ public class ProfilesRepository
     return keeps;
   }
 
-  internal Profile GetUserProfile(string id)
+  internal List<Vault> GetUserVaults(string id)
   {
     string sql = @"
     SELECT
+    vt.*,
     prof.*
-    FROM accounts prof
-    WHERE prof.id = @id;
+    FROM vaults vt
+    JOIN accounts prof ON vt.creatorId = prof.id
+    WHERE prof.id = @id AND vt.isPrivate = false;
     ";
-    Profile userProfile = _db.Query<Profile>(sql, new { id }).FirstOrDefault();
-    return userProfile;
+    List<Vault> vaults = _db.Query<Vault, Profile, Vault>(sql, (vault, profile) =>
+    {
+      vault.CreatorId = profile.Id;
+      return vault;
+    }, new { id }).ToList();
+    return vaults;
   }
 }
