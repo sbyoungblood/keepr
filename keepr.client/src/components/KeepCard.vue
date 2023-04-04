@@ -1,29 +1,11 @@
 <template>
-  <div class="component bg-white rounded elevation-1" data-bs-toggle="modal" data-bs-target="#modalId">
-    <img class="img-fluid rounded-top" :src="keep.img" alt="">
-    <h4 class="p-2 text-dark text-center">{{ keep.name }}</h4>
+  <div class="component  rounded elevation-5 selectable" data-bs-toggle="modal" data-bs-target="#keepDetailsModal">
+    <img @click="SetActiveKeep(keep)" class="kc-img img-fluid rounded" :src="keep.img" alt="">
+    <h5 class="kc-name ps-2">{{ keep.name }}</h5>
+    <img class="kc-user-img p-1 rounded-circle" :src="keep.creator.picture" alt="">
   </div>
 
-
-
-  <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
-    aria-labelledby="modalTitleId" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalTitleId">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          Body
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <KeepDetailsModal />
 </template>
 
 
@@ -33,18 +15,59 @@
 
 
 <script>
+import { logger } from "../utils/Logger";
+import Pop from "../utils/Pop";
+import { keepsService } from "../services/KeepsService";
+import KeepDetailsModal from "./KeepDetailsModal.vue";
+
 export default {
   props: { keep: { type: Object, required: true } },
   setup() {
-    return {}
-  }
+    return {
+      async SetActiveKeep(keep) {
+        try {
+          await keepsService.SetActiveKeep(keep);
+        }
+        catch (error) {
+          logger.log(error);
+          Pop.error(error, "[setting active recipe]");
+        }
+      }
+    };
+  },
+  components: { KeepDetailsModal, KeepDetailsModal }
 }
 </script>
 
 
 <style lang="scss" scoped>
-// .kc-user-img {
-//   max-height: 40px;
-//   max-width: 40px;
-// }
+.kc-user-img {
+  position: relative;
+}
+
+.kc-name {
+  position: absolute;
+  bottom: 0;
+  color: white;
+}
+
+.kc-user-img {
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  max-height: 50px;
+  max-width: 50px;
+}
+
+.kd-image {
+  object-position: center;
+  object-fit: cover;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 </style>

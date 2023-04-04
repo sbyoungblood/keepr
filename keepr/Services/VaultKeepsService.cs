@@ -13,7 +13,7 @@ public class VaultKeepsService
 
   internal VaultKeep CreateVaultKeep(VaultKeep vaultKeepData, string userId)
   {
-    Vault vault = _vaultsService.GetVaultById(vaultKeepData.VaultId);
+    Vault vault = _vaultsService.GetVaultById(vaultKeepData.VaultId, userId);
     if (vault.CreatorId != userId) throw new Exception("Sorry, you can't put that there.");
     VaultKeep vaultKeep = _repo.CreateVaultKeep(vaultKeepData);
     return vaultKeep;

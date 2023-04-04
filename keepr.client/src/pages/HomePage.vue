@@ -19,12 +19,12 @@ export default {
   setup() {
 
     onMounted(() => {
-      getKeeps()
+      GetKeeps()
     })
 
-    async function getKeeps() {
+    async function GetKeeps() {
       try {
-        await keepsService.getKeeps()
+        await keepsService.GetKeeps()
       } catch (error) {
         logger.error(error)
         Pop.error(error)
@@ -58,7 +58,7 @@ export default {
 //   }
 // }
 
-$gap: .5em;
+$gap: 1.5em;
 
 .bricks {
   columns: 250px;

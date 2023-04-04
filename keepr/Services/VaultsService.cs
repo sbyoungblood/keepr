@@ -17,7 +17,7 @@ public class VaultsService
 
   internal string DeleteVault(int id, string userId)
   {
-    Vault vault = this.GetVaultById(id);
+    Vault vault = this.GetVaultById(id, userId);
     if (vault.CreatorId != userId) throw new Exception("That is not your Vault!");
     _repo.DeleteVault(id);
     return $"{vault.Name} was deleted.";
@@ -29,17 +29,17 @@ public class VaultsService
     return vaults;
   }
 
-  internal Vault GetVaultById(int id)
+  internal Vault GetVaultById(int id, string userId)
   {
-    Vault vault = _repo.GetVaultById(id);
+    Vault vault = _repo.GetVaultById(id, userId);
     if (vault == null) throw new Exception($"Sorry, couldn't find a vault at id {id}");
-    if (vault.IsPrivate == true) throw new Exception($"Sorry, vault {id} is a private vault.");
+    if (vault.IsPrivate == true && vault.CreatorId != userId) throw new Exception($"Sorry, vault {id} is a private vault.");
     return vault;
   }
 
   internal Vault UpdateVault(Vault updateData, string userId)
   {
-    Vault original = this.GetVaultById(updateData.Id);
+    Vault original = this.GetVaultById(updateData.Id, userId);
     if (original.CreatorId != userId) throw new Exception("Sorry, that aint your vault.");
     original.Name = updateData.Name == null ? original.Name : updateData.Name;
     original.IsPrivate = updateData.IsPrivate;

@@ -38,9 +38,9 @@ public class KeepsService
     return keep;
   }
 
-  internal List<VaultedKeep> GetKeepsByVault(int vaultId)
+  internal List<VaultedKeep> GetKeepsByVault(int vaultId, string userId)
   {
-    Vault vault = _vaultsService.GetVaultById(vaultId);
+    Vault vault = _vaultsService.GetVaultById(vaultId, userId);
     if (vault.IsPrivate == true) throw new Exception($"Sorry, that vault is private.");
     List<VaultedKeep> vaultedKeeps = _repo.GetKeepsByVault(vaultId);
     return vaultedKeeps;

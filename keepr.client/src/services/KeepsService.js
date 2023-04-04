@@ -5,10 +5,16 @@ import { api } from "./AxiosService"
 class KeepsService {
 
 
-  async getKeeps() {
+  async GetKeeps() {
     const res = await api.get('api/keeps')
     logger.log('[GOT KEEPS]', res.data)
     AppState.keeps = res.data
   }
+
+  SetActiveKeep(keep) {
+    AppState.activeKeep = {}
+    AppState.activeKeep = keep
+  }
+
 }
 export const keepsService = new KeepsService()

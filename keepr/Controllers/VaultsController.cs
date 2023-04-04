@@ -34,11 +34,13 @@ public class VaultsController : ControllerBase
   }
 
   [HttpGet("{id}")]
-  public ActionResult<Vault> GetVaultById(int id)
+
+  public async Task<ActionResult<Vault>> GetVaultById(int id, string userId)
   {
     try
     {
-      Vault vault = _vaultsService.GetVaultById(id);
+      Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+      Vault vault = _vaultsService.GetVaultById(id, userInfo?.Id);
       return Ok(vault);
     }
     catch (Exception e)
@@ -67,7 +69,7 @@ public class VaultsController : ControllerBase
 
   [HttpDelete("{id}")]
   [Authorize]
-  public async Task<ActionResult<string>> DeleteVault(int id)
+  public async Task<ActionResult<string>> DeleteVault(int id, string userId)
   {
     try
     {
@@ -82,12 +84,13 @@ public class VaultsController : ControllerBase
   }
 
   [HttpGet("{id}/keeps")]
-  public async Task<ActionResult<List<VaultedKeep>>> GetKeepsByVault(int id)
+
+  public async Task<ActionResult<List<VaultedKeep>>> GetKeepsByVault(int id, string userId)
   {
     try
     {
       Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
-      List<VaultedKeep> vaultedKeeps = _keepsService.GetKeepsByVault(id);
+      List<VaultedKeep> vaultedKeeps = _keepsService.GetKeepsByVault(id, userInfo?.Id);
       return Ok(vaultedKeeps);
     }
     catch (Exception e)
