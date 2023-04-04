@@ -1,8 +1,20 @@
 <template>
-  <div class="component  rounded elevation-5 selectable" data-bs-toggle="modal" data-bs-target="#keepDetailsModal">
+  <div class="rounded elevation-5 selectable" data-bs-toggle="modal" data-bs-target="#keepDetailsModal">
     <img @click="SetActiveKeep(keep)" class="kc-img img-fluid rounded" :src="keep.img" alt="">
-    <h5 class="kc-name ps-2">{{ keep.name }}</h5>
-    <img class="kc-user-img p-1 rounded-circle" :src="keep.creator.picture" alt="">
+    <div class="container">
+      <div class="row kc-top-row">
+        <i v-if="keep.creatorId == account.id"
+          class="col-12 mdi mdi-close-circle kc-delete d-flex justify-content-end pt-1"></i>
+      </div>
+      <div class="row kc-btm-row pb-2">
+        <div class="col-8 d-flex flex-column justify-content-center">
+          <div class="kc-name">{{ keep.name }}</div>
+        </div>
+        <div class="col-4 d-flex justify-content-end">
+          <img class="kc-user-img rounded-circle" :src="keep.creator.picture" alt="">
+        </div>
+      </div>
+    </div>
   </div>
 
   <KeepDetailsModal />
@@ -19,11 +31,16 @@ import { logger } from "../utils/Logger";
 import Pop from "../utils/Pop";
 import { keepsService } from "../services/KeepsService";
 import KeepDetailsModal from "./KeepDetailsModal.vue";
+import { computed } from "vue";
+import { AppState } from "../AppState";
 
 export default {
   props: { keep: { type: Object, required: true } },
   setup() {
     return {
+
+      account: computed(() => AppState.account),
+
       async SetActiveKeep(keep) {
         try {
           await keepsService.SetActiveKeep(keep);
@@ -41,33 +58,35 @@ export default {
 
 
 <style lang="scss" scoped>
-.kc-user-img {
+.kc-img {
   position: relative;
 }
 
-.kc-name {
+.kc-top-row {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: .75em;
+  max-width: 100%;
+  color: rgb(249, 48, 48);
+}
+
+.kc-btm-row {
   position: absolute;
   bottom: 0;
+  right: 0;
+  left: .50em;
+  max-width: 100%;
   color: white;
+  font-family: 'DM Serif Display', serif;
+  font-size: x-large;
 }
 
 .kc-user-img {
-  position: absolute;
-  bottom: 0;
-  right: 10px;
-  max-height: 50px;
-  max-width: 50px;
-}
-
-.kd-image {
-  object-position: center;
-  object-fit: cover;
-}
-
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  // position: relative;
+  // bottom: 0;
+  // right: 0;
+  max-height: 35px;
+  max-width: 35px;
 }
 </style>

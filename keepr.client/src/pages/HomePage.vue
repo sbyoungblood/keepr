@@ -61,7 +61,7 @@ export default {
 $gap: 1.5em;
 
 .bricks {
-  columns: 250px;
+  columns: 300px;
   column-gap: $gap;
 
   &>div {
