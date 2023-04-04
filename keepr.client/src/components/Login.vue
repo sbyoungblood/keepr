@@ -8,7 +8,7 @@
       <div class="dropdown dropstart my-2 my-lg-0">
         <div type="button" class="border-0 selectable no-select" data-bs-toggle="dropdown" aria-expanded="false">
           <div v-if="account.picture || user.picture">
-            <img :src="account.picture || user.picture" alt="account photo" height="40" class="rounded-circle"
+            <img :src="account.picture || user.picture" alt="account photo" height="40" class="rounded-circle elevation-5"
               style="background-color: whitesmoke;" />
           </div>
         </div>

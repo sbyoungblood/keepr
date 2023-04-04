@@ -3,8 +3,8 @@
     <img @click="SetActiveKeep(keep)" class="kc-img img-fluid rounded" :src="keep.img" alt="">
     <div class="container">
       <div class="row kc-top-row">
-        <i v-if="keep.creatorId == account.id"
-          class="col-12 mdi mdi-close-circle kc-delete d-flex justify-content-end pt-1"></i>
+        <i v-if="keep.creatorId == account.id" @click="DeleteKeep(keep)"
+          class="col-12 mdi mdi-close-circle kc-delete d-flex justify-content-end pt-1" title="delete keep"></i>
       </div>
       <div class="row kc-btm-row pb-2">
         <div class="col-8 d-flex flex-column justify-content-center">
@@ -16,8 +16,6 @@
       </div>
     </div>
   </div>
-
-  <KeepDetailsModal />
 </template>
 
 
@@ -31,7 +29,7 @@ import { logger } from "../utils/Logger";
 import Pop from "../utils/Pop";
 import { keepsService } from "../services/KeepsService";
 import KeepDetailsModal from "./KeepDetailsModal.vue";
-import { computed } from "vue";
+import { computed, popScopeId } from "vue";
 import { AppState } from "../AppState";
 
 export default {
@@ -49,7 +47,20 @@ export default {
           logger.log(error);
           Pop.error(error, "[setting active recipe]");
         }
+      },
+
+      async DeleteKeep(keep) {
+        try {
+          if (await Pop.confirm('Are you sure you want to delete this Keep?')) {
+            await keepsService.DeleteKeep(keep)
+            Pop.success(`You deleted the keep "${keep.name}"`)
+          }
+        } catch (error) {
+          logger.log(error)
+          Pop.error(error, "[deleting keep]")
+        }
       }
+
     };
   },
   components: { KeepDetailsModal, KeepDetailsModal }
@@ -68,7 +79,7 @@ export default {
   right: 0;
   left: .75em;
   max-width: 100%;
-  color: rgb(249, 48, 48);
+  color: rgb(209, 209, 209);
 }
 
 .kc-btm-row {

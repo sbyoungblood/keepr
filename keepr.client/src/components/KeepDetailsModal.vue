@@ -31,8 +31,10 @@
                     <div class="col-9">
                       <div>vault</div>
                     </div>
-                    <div class="col-3">
-                      <img class="kd-user-img rounded-circle" :src="keep?.creator?.picture" alt="">
+                    <div v-if="keep != null" class="col-3" @click="SetActiveProfile(profile)">
+                      <router-link :to="{ name: 'Profile', params: { profileId: keep?.creatorId } }">
+                        <img class="kd-user-img rounded-circle" :src="keep?.creator?.picture" alt="">
+                      </router-link>
                     </div>
                   </div>
                 </div>
@@ -48,17 +50,28 @@
 
 <script>
 import { computed } from "vue";
-import { keepsService } from "../services/KeepsService";
+import { profilesService } from "../services/ProfilesService.js"
 import { logger } from "../utils/Logger";
 import Pop from "../utils/Pop";
 import { AppState } from "../AppState";
 
 export default {
-
+  props: { profile: { type: Object, required: true } },
   setup() {
 
     return {
-      keep: computed(() => AppState.activeKeep)
+      keep: computed(() => AppState.activeKeep),
+      profile: computed(() => AppState.account),
+
+      async SetActiveProfile(profile) {
+        try {
+          await profilesService.SetActiveProfile(profile);
+          logger.log('[hello]')
+        } catch (error) {
+          logger.log(error);
+          Pop.error(error, '[setting active profile]');
+        }
+      }
     }
   }
 }
