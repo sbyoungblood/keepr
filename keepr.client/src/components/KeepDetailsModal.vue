@@ -13,7 +13,7 @@
                 <div class="col-12 d-flex flex-column justify-content-between">
                   <div class="row justify-content-center pt-4">
                     <div class="col-3 d-flex justify-content-center">
-                      <i class="mdi mdi-eye-outline kd-icon"> 5</i>
+                      <i class="mdi mdi-eye-outline kd-icon">{{ keep?.views }}</i>
                     </div>
                     <div class="col-3 d-flex justify-content-center">
                       <i class="mdi mdi-bookmark-outline kd-icon">3</i>
@@ -49,15 +49,29 @@
 
 
 <script>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { profilesService } from "../services/ProfilesService.js"
 import { logger } from "../utils/Logger";
 import Pop from "../utils/Pop";
 import { AppState } from "../AppState";
+import { keepsService } from "../services/KeepsService";
 
 export default {
   props: { profile: { type: Object, required: true } },
   setup() {
+
+    onMounted(() => {
+      GetKeepById()
+    })
+
+    async function GetKeepById() {
+      try {
+        await keepsService.GetKeepById(keep.id)
+      } catch (error) {
+        logger.log(error)
+        Pop.error(error, '[getting keep by id]')
+      }
+    }
 
     return {
       keep: computed(() => AppState.activeKeep),

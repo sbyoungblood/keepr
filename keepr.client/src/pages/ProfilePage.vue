@@ -19,7 +19,9 @@
       <div class="col-8">
         <div class="row">
           <div v-for="v in vaults" class="col-3 mb-3">
-            <VaultCard :vault="v" />
+            <router-link :to="{ name: 'Vault', params: { vaultId: v?.id } }">
+              <VaultCard :vault="v" />
+            </router-link>
           </div>
         </div>
       </div>

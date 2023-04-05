@@ -19,7 +19,7 @@ public class KeepsService
 
   internal string DeleteKeep(int id, string userId)
   {
-    Keep keep = this.GetKeepById(id);
+    Keep keep = this.GetKeepById(id, userId);
     if (keep.CreatorId != userId) throw new Exception("That is not your Keep!");
     _repo.DeleteKeep(id);
     return $"{keep.Name} was deleted.";
@@ -31,10 +31,12 @@ public class KeepsService
     return keeps;
   }
 
-  internal Keep GetKeepById(int id)
+  internal Keep GetKeepById(int id, string userId)
   {
     Keep keep = _repo.GetKeepById(id);
     if (keep == null) throw new Exception($"There is no keep at id {id}");
+    if (keep.CreatorId != userId)
+      keep.Views++;
     return keep;
   }
 
@@ -48,7 +50,7 @@ public class KeepsService
 
   internal Keep UpdateKeep(Keep updateData, string userId)
   {
-    Keep original = this.GetKeepById(updateData.Id);
+    Keep original = this.GetKeepById(updateData.Id, userId);
     if (original.CreatorId != userId) throw new Exception("Sorry, that aint your keep.");
     original.Name = updateData.Name == null ? original.Name : updateData.Name;
     original.Description = updateData.Description == null ? original.Description : updateData.Description;

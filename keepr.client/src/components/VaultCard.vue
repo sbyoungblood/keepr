@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-content-center">
-    <div class="position-relative">
-      <img class="rounded vault-img" :src="vault?.img" alt="">
+    <div class="position-relative selectable">
+      <img @click="SetActiveVault(vault)" class="rounded vault-img" :src="vault?.img" alt="">
       <div class="vault-name">
         {{ vault?.name }}
       </div>
@@ -14,12 +14,24 @@
 
 
 <script>
+import { logger } from "../utils/Logger";
+import Pop from "../utils/Pop";
+import { vaultsService } from "../services/VaultsService";
+
 export default {
   props: { vault: { type: Object, required: true } },
 
   setup() {
     return {
 
+      async SetActiveVault(vault) {
+        try {
+          await vaultsService.SetActiveVault(vault)
+        } catch (error) {
+          logger.log(error)
+          Pop.error(error, '[setting active vault]')
+        }
+      }
 
     }
   }

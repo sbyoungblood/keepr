@@ -45,7 +45,7 @@ export default {
         }
         catch (error) {
           logger.log(error);
-          Pop.error(error, "[setting active recipe]");
+          Pop.error(error, "[setting active keep]");
         }
       },
 
