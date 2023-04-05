@@ -10,7 +10,7 @@
           <h6 class="selectable" data-bs-toggle="modal" data-bs-target="#createKeepModal">+Keep</h6>
         </div>
         <div class="navbar-nav d-flex">
-          <h6>+Vault</h6>
+          <h6 class="selectable" data-bs-toggle="modal" data-bs-target="#createVaultModal">+Vault</h6>
         </div>
       </span>
       <!-- LOGIN COMPONENT HERE -->

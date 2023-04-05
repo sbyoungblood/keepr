@@ -3,6 +3,7 @@
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
       <div class="modal-content">
+        sup
         <div class="">
           <div class="row">
             <div class="col-6 p-0">
@@ -31,10 +32,10 @@
                     <div class="col-9">
                       <div>vault</div>
                     </div>
-                    <div v-if="keep" class="col-3" @click="SetActiveProfile(profile)">
-                      <!-- <router-link :to="{ name: 'Profile', params: { profileId: keep?.creatorId } }">
+                    <div v-if="keep?.creatorId" class="col-3" @click="SetActiveProfile(profile)">
+                      <router-link :to="{ name: 'Profile', params: { profileId: keep?.creatorId } }">
                         <img class="kd-user-img rounded-circle" :src="keep?.creator?.picture" alt="">
-                      </router-link> -->
+                      </router-link>
                     </div>
                   </div>
                 </div>

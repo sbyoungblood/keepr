@@ -9,8 +9,8 @@
           </div>
           <div class="modal-body">
             <div class="form-floating mb-3">
-              <input v-model="editable.name" type="text" class="form-control" id="floatingInput"
-                placeholder="name@example.com" required>
+              <input v-model="editable.name" type="text" class="form-control" id="floatingInput" placeholder="Cool Keep"
+                required>
               <label for="floatingInput">Name</label>
             </div>
             <div class="form-floating mb-3">
