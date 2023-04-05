@@ -9,6 +9,7 @@
     Made with 💖 by CodeWorks
   </footer>
 
+  <CreateKeepModal />
   <KeepDetailsModal />
 </template>
 
@@ -16,6 +17,8 @@
 import { computed } from 'vue'
 import { AppState } from './AppState'
 import Navbar from './components/Navbar.vue'
+import CreateKeepModal from "./components/CreateKeepModal.vue"
+import KeepDetailsModal from "./components/KeepDetailsModal.vue"
 
 export default {
   setup() {
@@ -23,7 +26,7 @@ export default {
       appState: computed(() => AppState)
     }
   },
-  components: { Navbar }
+  components: { Navbar, CreateKeepModal, KeepDetailsModal }
 }
 </script>
 <style lang="scss">

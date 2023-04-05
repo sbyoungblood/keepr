@@ -1,6 +1,8 @@
 import { AppState } from "../AppState"
+import { Keep } from "../models/Keep"
 import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
+
 
 class KeepsService {
 
@@ -14,6 +16,11 @@ class KeepsService {
   SetActiveKeep(keep) {
     AppState.activeKeep = {}
     AppState.activeKeep = keep
+  }
+
+  async CreateKeep(keepData) {
+    const res = await api.post('api/keeps', keepData)
+    AppState.keeps.push(new Keep(res.data))
   }
 
   async DeleteKeep(keep) {

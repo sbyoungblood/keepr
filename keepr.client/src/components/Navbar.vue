@@ -5,13 +5,14 @@
       <span class="navbar-toggler-icon"></span>
     </button> -->
     <div class="" id="navbarText">
-      <ul class="navbar-nav">
-        <li>
-          <router-link :to="{ name: 'About' }" class="btn text-dark lighten-30 selectable text-uppercase">
-            About
-          </router-link>
-        </li>
-      </ul>
+      <span>
+        <div class="navbar-nav d-flex">
+          <h6 class="selectable" data-bs-toggle="modal" data-bs-target="#createKeepModal">+Keep</h6>
+        </div>
+        <div class="navbar-nav d-flex">
+          <h6>+Vault</h6>
+        </div>
+      </span>
       <!-- LOGIN COMPONENT HERE -->
     </div>
     <div>

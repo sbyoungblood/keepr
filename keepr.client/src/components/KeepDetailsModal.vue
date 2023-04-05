@@ -31,10 +31,10 @@
                     <div class="col-9">
                       <div>vault</div>
                     </div>
-                    <div v-if="keep != null" class="col-3" @click="SetActiveProfile(profile)">
-                      <router-link :to="{ name: 'Profile', params: { profileId: keep?.creatorId } }">
+                    <div v-if="keep" class="col-3" @click="SetActiveProfile(profile)">
+                      <!-- <router-link :to="{ name: 'Profile', params: { profileId: keep?.creatorId } }">
                         <img class="kd-user-img rounded-circle" :src="keep?.creator?.picture" alt="">
-                      </router-link>
+                      </router-link> -->
                     </div>
                   </div>
                 </div>
@@ -61,17 +61,17 @@ export default {
   setup() {
 
     onMounted(() => {
-      GetKeepById()
+      // GetKeepById()
     })
 
-    async function GetKeepById() {
-      try {
-        await keepsService.GetKeepById(keep.id)
-      } catch (error) {
-        logger.log(error)
-        Pop.error(error, '[getting keep by id]')
-      }
-    }
+    // async function GetKeepById() {
+    //   try {
+    //     await keepsService.GetKeepById(keep.id)
+    //   } catch (error) {
+    //     logger.log(error)
+    //     Pop.error(error, '[getting keep by id]')
+    //   }
+    // }
 
     return {
       keep: computed(() => AppState.activeKeep),
