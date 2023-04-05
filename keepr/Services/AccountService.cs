@@ -31,4 +31,15 @@ public class AccountService
     original.Picture = editData.Picture.Length > 0 ? editData.Picture : original.Picture;
     return _repo.Edit(original);
   }
+
+  internal Account EditAccount(Account updateData, string accountId)
+  {
+    Account original = _repo.GetById(accountId);
+    original.Name = updateData.Name == null ? original.Name : updateData.Name;
+    original.Picture = updateData.Picture == null ? original.Picture : updateData.Picture;
+    original.CoverImg = updateData.CoverImg == null ? original.CoverImg : updateData.CoverImg;
+    _repo.EditAccount(original);
+    return original;
+
+  }
 }

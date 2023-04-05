@@ -43,5 +43,19 @@ public class AccountsRepository
     _db.Execute(sql, update);
     return update;
   }
+
+  internal int EditAccount(Account updateData)
+  {
+    string sql = @"
+    UPDATE accounts
+    SET
+    name = @name,
+    picture = @picture,
+    coverImg = @coverImg
+    WHERE id = @id;
+    ";
+    int rows = _db.Execute(sql, updateData);
+    return rows;
+  }
 }
 
