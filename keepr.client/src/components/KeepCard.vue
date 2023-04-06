@@ -1,6 +1,6 @@
 <template>
   <div class="rounded elevation-5 selectable" data-bs-toggle="modal" data-bs-target="#keepDetailsModal">
-    <img @click="SetActiveKeep(keep)" class="kc-img img-fluid rounded" :src="keep?.img" alt="">
+    <img @click="GetOneKeep(keep.id)" class="kc-img img-fluid rounded" :src="keep?.img" alt="">
     <div class="container">
       <div class="row kc-top-row">
         <i v-if="keep.creatorId == account.id" @click="DeleteKeep(keep)"
@@ -39,9 +39,9 @@ export default {
 
       account: computed(() => AppState.account),
 
-      async SetActiveKeep(keep) {
+      async GetOneKeep(keepId) {
         try {
-          await keepsService.SetActiveKeep(keep);
+          await keepsService.GetOneKeep(keepId);
         }
         catch (error) {
           logger.log(error);

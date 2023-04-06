@@ -1,15 +1,16 @@
 <template>
   <div class="modal fade" id="keepDetailsModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
+    <div class="modal-dialog  modal-dialog-centered modal-xl" role="document">
       <div class="modal-content">
-        sup
-        <div class="">
+        <div class="modal-body p-0">
+
           <div class="row">
             <div class="col-6 p-0">
               <img class="kd-img" :src="keep?.img" alt="">
             </div>
-            <div class="col-6 d-flex justify-content-center">
+
+            <div class="col-6 p-0 d-flex justify-content-center">
               <div class="row">
                 <div class="col-12 d-flex flex-column justify-content-between">
                   <div class="row justify-content-center pt-4">
@@ -30,7 +31,19 @@
                   </div>
                   <div class="row">
                     <div class="col-9">
-                      <div>vault</div>
+                      <form>
+                        <div class="input-group">
+                          <select class="custom-select" id="inputGroupSelect04">
+                            <option selected>Choose...</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                          </select>
+                          <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button">Button</button>
+                          </div>
+                        </div>
+                      </form>
                     </div>
                     <div v-if="keep?.creatorId" class="col-3" @click="SetActiveProfile(profile)">
                       <router-link :to="{ name: 'Profile', params: { profileId: keep?.creatorId } }">
@@ -56,15 +69,16 @@ import { logger } from "../utils/Logger";
 import Pop from "../utils/Pop";
 import { AppState } from "../AppState";
 import { keepsService } from "../services/KeepsService";
+import { vaultsService } from "../services/VaultsService";
 
 export default {
   props: { profile: { type: Object, required: true } },
   setup() {
 
     onMounted(() => {
+
       // GetKeepById()
     })
-
     // async function GetKeepById() {
     //   try {
     //     await keepsService.GetKeepById(keep.id)
@@ -96,7 +110,7 @@ export default {
 <style lang="scss" scoped>
 .kd-img {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: cover;
   object-position: center;
 }
@@ -112,5 +126,9 @@ export default {
 
 .kp-name {
   font-family: 'DM Serif Display', serif;
+}
+
+.details {
+  max-height: 100%;
 }
 </style>

@@ -95,6 +95,7 @@ public class KeepsRepository
     UPDATE keeps
     SET
     name = @name,
+    views = @views,
     description = @description
     WHERE id = @id;
     ";

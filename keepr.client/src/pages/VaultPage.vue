@@ -1,8 +1,15 @@
 <template>
   <div class="container">
-    <div class="row justify-content-center mb-4">
+    <div class="row justify-content-between my-4">
+      <div class="col-2">
+        <button v-if="vault.creatorId == account.id" class="btn btn-outline-dark">Lock Vault</button>
+      </div>
       <div class="col-6 d-flex justify-content-center">
         <img class="vault-coverImg rounded elevation-3" :src="vault?.img" alt="">
+      </div>
+      <div class="col-2">
+        <button v-if="vault.creatorId == account.id" @click="DeleteVault()" class="btn btn-outline-danger">Delete
+          Vault</button>
       </div>
     </div>
     <div class="row justify-content-center mt-2 mb-5">
@@ -60,7 +67,21 @@ export default {
 
     return {
       vault: computed(() => AppState.activeVault),
-      keeps: computed(() => AppState.vaultKeeps)
+      keeps: computed(() => AppState.vaultKeeps),
+      account: computed(() => AppState.account),
+
+      async DeleteVault() {
+        try {
+          if (await Pop.confirm('Are you sure you want to delete this Vault?')) {
+            await vaultsService.DeleteVault(route.params.vaultId)
+            Pop.success(`You deleted the vault.`)
+          }
+        } catch (error) {
+          logger.log(error)
+          Pop.error(error, '[deleting vault]')
+        }
+
+      }
     }
   }
 }

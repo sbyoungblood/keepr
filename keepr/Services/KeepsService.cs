@@ -37,6 +37,8 @@ public class KeepsService
     if (keep == null) throw new Exception($"There is no keep at id {id}");
     if (keep.CreatorId != userId)
       keep.Views++;
+    _repo.UpdateData(keep);
+    // TODO save this change using edit function
     return keep;
   }
 
@@ -54,6 +56,7 @@ public class KeepsService
     if (original.CreatorId != userId) throw new Exception("Sorry, that aint your keep.");
     original.Name = updateData.Name == null ? original.Name : updateData.Name;
     original.Description = updateData.Description == null ? original.Description : updateData.Description;
+    original.Views = updateData.Views == null ? original.Views : updateData.Views;
     _repo.UpdateData(original);
     return original;
   }

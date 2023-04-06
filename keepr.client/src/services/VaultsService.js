@@ -11,6 +11,7 @@ class VaultsService {
   }
 
   async GetActiveVault(vaultId) {
+    AppState.activeVault = {}
     const res = await api.get(`api/vaults/${vaultId}`)
     logger.log('[GET ACTIVE VAULT]')
     AppState.activeVault = res.data
@@ -25,6 +26,18 @@ class VaultsService {
   async CreateVault(vaultData) {
     const res = await api.post('api/vaults', vaultData)
     AppState.vaultKeeps.push(new Vault(res.data))
+  }
+
+  async DeleteVault(vaultId) {
+    const res = await api.delete('api/vaults/' + vaultId)
+    const index = AppState.profileVaults.findIndex(v => v.id == vaultId)
+    AppState.profileVaults.splice(index, 1)
+  }
+
+  async GetMyVaults() {
+    const res = await api.get('account/vaults')
+    logger.log('[GOT MY VAULTS]')
+    AppState.myVaults = res.data
   }
 
 }
