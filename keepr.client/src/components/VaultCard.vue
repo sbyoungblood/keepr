@@ -1,12 +1,13 @@
 <template>
   <div class="d-flex justify-content-center">
     <div class="position-relative selectable">
-      <img @click="SetActiveVault(vault)" class="rounded vault-img" :src="vault?.img" alt="">
+      <img @click="SetActiveVault(vault)" class="rounded vault-img" title="Click to see vaults in this keep."
+        :src="vault?.img" alt="">
       <div class="vault-name">
         {{ vault?.name }}
       </div>
       <div class="col-2 vault-lock">
-        <i class="mdi mdi-lock"></i>
+        <i v-if="vault?.isPrivate == true" class="mdi mdi-lock"></i>
       </div>
     </div>
   </div>
@@ -57,6 +58,7 @@ export default {
   left: 0;
   font-family: 'DM Serif Display', serif;
   color: white;
+  text-shadow: 0px 0px 5px black;
   font-size: larger;
   padding: 8px;
 }

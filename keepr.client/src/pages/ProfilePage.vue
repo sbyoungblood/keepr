@@ -10,6 +10,16 @@
         <img class="profile-picture rounded-circle elevation-5" :src="profile?.picture" alt="">
       </div>
     </div>
+    <div class="row">
+      <div class="col-12 d-flex justify-content-center">
+        <h3>{{ profile?.name }}</h3>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-12 d-flex justify-content-center">
+        <h5>Keeps {{ keeps.length }} | Vaults {{ vaults.length }}</h5>
+      </div>
+    </div>
     <div class="row mt-5 mb-3 justify-content-center">
       <div class="col-4 d-flex justify-content-center">
         <h1>Vaults</h1>
@@ -18,9 +28,14 @@
     <div class="row justify-content-center">
       <div class="col-8">
         <div class="row">
-          <div v-for="v in vaults" class="col-3 mb-3">
+          <div v-if="account.id != profile.id" v-for="v in vaults" class="col-3 mb-3">
             <router-link :to="{ name: 'Vault', params: { vaultId: v?.id } }">
               <VaultCard :vault="v" />
+            </router-link>
+          </div>
+          <div v-if="account.id == profile.id" v-for="m in myVaults" class="col-3 mb-3">
+            <router-link :to="{ name: 'Vault', params: { vaultId: m?.id } }">
+              <VaultCard :vault="m" />
             </router-link>
           </div>
         </div>
@@ -93,7 +108,9 @@ export default {
     return {
       profile: computed(() => AppState.activeProfile),
       vaults: computed(() => AppState.profileVaults),
-      keeps: computed(() => AppState.profileKeeps)
+      keeps: computed(() => AppState.profileKeeps),
+      account: computed(() => AppState.account),
+      myVaults: computed(() => AppState.myVaults)
     }
   }
 }

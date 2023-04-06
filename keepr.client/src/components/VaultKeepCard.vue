@@ -1,6 +1,7 @@
 <template>
   <div class="rounded elevation-5 selectable" data-bs-toggle="modal" data-bs-target="#vaultKeepModal">
-    <img @click="GetOneKeep(keep.id)" class="kc-img img-fluid rounded" :src="keep?.img" alt="">
+    <img @click="GetOneKeep(keep.id)" class="kc-img img-fluid rounded" title="Click to see keep details" :src="keep?.img"
+      alt="">
     <div class="container">
       <div class="row kc-top-row">
         <i @click="Unkeep(keep?.vaultKeepId)"
@@ -11,7 +12,7 @@
           <div class="kc-name">{{ keep?.name }}</div>
         </div>
         <div class="col-4 d-flex justify-content-end">
-          <img class="kc-user-img rounded-circle" :src="keep?.creator?.picture" alt="">
+          <img class="kc-user-img rounded-circle" :title="keep?.creator?.name" :src="keep?.creator?.picture" alt="">
         </div>
       </div>
     </div>
@@ -51,6 +52,7 @@ export default {
 
       async Unkeep(vkId) {
         try {
+          logger.log(vkId)
           if (await Pop.confirm('Are you sure you want to remove this Keep from Vault?')) {
             await keepsService.Unkeep(vkId)
             Pop.success("You removed the keep")

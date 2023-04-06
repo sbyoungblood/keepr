@@ -2,7 +2,12 @@
   <div class="container">
     <div class="row justify-content-between my-4">
       <div class="col-2">
-        <button v-if="vault.creatorId == account.id" class="btn btn-outline-dark">Lock Vault</button>
+        <button v-if="vault.creatorId == account.id && vault.isPrivate == false" @click="SwitchPrivate()"
+          class="btn btn-outline-dark">Lock
+          Vault</button>
+        <button v-if="vault.creatorId == account.id && vault.isPrivate == true" @click="SwitchPrivate()"
+          class="btn btn-outline-dark">Unlock
+          Vault</button>
       </div>
       <div class="col-6 d-flex justify-content-center">
         <img class="vault-coverImg rounded elevation-3" :src="vault?.img" alt="">
@@ -15,6 +20,7 @@
     <div class="row justify-content-center mt-2 mb-5">
       <div class="col-8 text-center">
         <h1>{{ vault.name }}</h1>
+        <h5>Keeps {{ keeps.length }}</h5>
       </div>
     </div>
     <div class="row justify-content-center">
@@ -38,6 +44,7 @@ import { vaultsService } from "../services/VaultsService";
 import { computed, onMounted } from "vue";
 import { AppState } from "../AppState";
 import VaultKeepCard from "../components/VaultKeepCard.vue";
+import { router } from "../router";
 
 export default {
   setup() {
@@ -53,6 +60,7 @@ export default {
       catch (error) {
         logger.log(error);
         Pop.error(error, "[getting active vault]");
+        router.push({ path: '/' })
       }
     }
     async function GetKeepsInVault() {
@@ -80,6 +88,16 @@ export default {
         catch (error) {
           logger.log(error);
           Pop.error(error, "[deleting vault]");
+        }
+      },
+
+      async SwitchPrivate() {
+        try {
+          AppState.activeVault.isPrivate = !AppState.activeVault.isPrivate
+          await vaultsService.SwitchPrivate(AppState.activeVault);
+        } catch (error) {
+          logger.log(error);
+          Pop.error(error, '[switching the lock]')
         }
       }
     };

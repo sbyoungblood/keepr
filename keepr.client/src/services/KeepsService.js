@@ -41,8 +41,9 @@ class KeepsService {
   }
 
   async Unkeep(vkId) {
+    logger.log(vkId)
     const res = await api.delete('api/vaultkeeps/' + vkId)
-    const index = AppState.vaultKeeps.findIndex(k => k.id == vkId)
+    const index = AppState.vaultKeeps.findIndex(k => k.vaultKeepId == vkId)
     AppState.vaultKeeps.splice(index, 1)
   }
 

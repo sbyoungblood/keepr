@@ -1,6 +1,7 @@
 import { AppState } from "../AppState"
 import { VaultKeep } from "../models/VaultKeep"
 import { logger } from "../utils/Logger"
+import Pop from "../utils/Pop"
 import { api } from "./AxiosService"
 
 class VaultKeepsService {

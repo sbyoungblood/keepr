@@ -1,6 +1,7 @@
 <template>
   <div class="rounded elevation-5 selectable" data-bs-toggle="modal" data-bs-target="#keepDetailsModal">
-    <img @click="GetOneKeep(keep.id)" class="kc-img img-fluid rounded" :src="keep?.img" alt="">
+    <img @click="GetOneKeep(keep.id)" class="kc-img img-fluid rounded" title="Click to see keep details" :src="keep?.img"
+      alt="">
     <div class="container">
       <div class="row kc-top-row">
         <i v-if="keep.creatorId == account.id" @click="DeleteKeep(keep)"
@@ -11,7 +12,7 @@
           <div class="kc-name">{{ keep?.name }}</div>
         </div>
         <div class="col-4 d-flex justify-content-end">
-          <img class="kc-user-img rounded-circle" :src="keep?.creator?.picture" alt="">
+          <img class="kc-user-img rounded-circle" :title="keep?.creator?.name" :src="keep?.creator?.picture" alt="">
         </div>
       </div>
     </div>
@@ -89,6 +90,7 @@ export default {
   left: .50em;
   max-width: 100%;
   color: white;
+  text-shadow: 0px 0px 5px black;
   font-family: 'DM Serif Display', serif;
   font-size: x-large;
 }

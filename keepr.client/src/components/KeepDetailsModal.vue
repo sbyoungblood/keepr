@@ -30,7 +30,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-9">
+                    <div v-if="profile.id != null" class="col-9">
                       <form @submit.prevent="KeepKeep()">
                         <div class="input-group">
                           <select class="custom-select" id="inputGroupSelect04" v-model="editable.id">
@@ -45,7 +45,9 @@
                     </div>
                     <div v-if="keep?.creatorId" class="col-3" @click="SetActiveProfile(profile)">
                       <router-link :to="{ name: 'Profile', params: { profileId: keep?.creatorId } }">
-                        <img class="kd-user-img rounded-circle" :src="keep?.creator?.picture" alt="">
+                        <img class="kd-user-img rounded-circle" title="Go to user's profile page"
+                          :src="keep?.creator?.picture" alt="">
+                        <span>{{ keep?.creator?.name }}</span>
                       </router-link>
                     </div>
                   </div>
@@ -98,6 +100,8 @@ export default {
           const vaultId = editable.value.id
           const keepId = this.keep.id
           await vaultKeepsService.KeepKeep(vaultId, keepId)
+          this.keep.kept++;
+          Pop.success('[Keep has been kept]')
         } catch (error) {
           logger.log(error)
           Pop.error(error, '[keeping this keep]')

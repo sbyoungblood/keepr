@@ -42,6 +42,12 @@ class VaultsService {
     AppState.myVaults = res.data
   }
 
+  async SwitchPrivate(vault) {
+    const res = await api.put(`api/vaults/${vault.id}`, vault)
+    logger.log('[SWITCHED THE LOCK]')
+    AppState.activeVault = res.data
+  }
+
 }
 
 export const vaultsService = new VaultsService()
