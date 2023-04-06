@@ -10,7 +10,7 @@ public class Keep
   public int? Views { get; set; }
 
   //virtuals
-  public int Kept { get; set; }
+  public int? Kept { get; set; }
   public Profile Creator { get; set; }
 }
 

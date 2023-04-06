@@ -51,7 +51,7 @@ public class KeepsController : ControllerBase
     try
     {
       Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
-      Keep keep = _keepsService.GetKeepById(id, userInfo.Id);
+      Keep keep = _keepsService.GetKeepById(id, userInfo?.Id);
       return Ok(keep);
     }
     catch (Exception e)

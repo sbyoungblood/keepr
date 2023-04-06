@@ -31,11 +31,11 @@ public class KeepsService
     return keeps;
   }
 
-  internal Keep GetKeepById(int id, string userId)
+  internal Keep GetKeepById(int id, string userId, bool increaseViews = true)
   {
     Keep keep = _repo.GetKeepById(id);
     if (keep == null) throw new Exception($"There is no keep at id {id}");
-    if (keep.CreatorId != userId)
+    if (keep.CreatorId != userId && increaseViews)
       keep.Views++;
     _repo.UpdateData(keep);
     // TODO save this change using edit function
@@ -50,6 +50,13 @@ public class KeepsService
     return vaultedKeeps;
   }
 
+  internal void increaseKept(int keepId)
+  {
+    Keep keep = _repo.GetKeepById(keepId);
+    keep.Kept++;
+    _repo.UpdateData(keep);
+  }
+
   internal Keep UpdateKeep(Keep updateData, string userId)
   {
     Keep original = this.GetKeepById(updateData.Id, userId);
@@ -57,6 +64,7 @@ public class KeepsService
     original.Name = updateData.Name == null ? original.Name : updateData.Name;
     original.Description = updateData.Description == null ? original.Description : updateData.Description;
     original.Views = updateData.Views == null ? original.Views : updateData.Views;
+    original.Kept = updateData.Kept == null ? original.Kept : updateData.Kept;
     _repo.UpdateData(original);
     return original;
   }

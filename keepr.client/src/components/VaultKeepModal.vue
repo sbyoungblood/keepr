@@ -1,16 +1,16 @@
 <template>
-  <div class="modal fade" id="keepDetailsModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
+  <div class="modal fade" id="vaultKeepModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
     aria-hidden="true">
     <div class="modal-dialog  modal-dialog-centered modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-body p-0">
 
           <div class="row">
-            <div class="col-12 col-md-6 p-0">
+            <div class="col-6 p-0">
               <img class="kd-img" :src="keep?.img" alt="">
             </div>
 
-            <div class="col-12 col-md-6 p-0 d-flex justify-content-center">
+            <div class="col-6 p-0 d-flex justify-content-center">
               <div class="row">
                 <div class="col-12 d-flex flex-column justify-content-between">
                   <div class="row justify-content-center pt-4">
@@ -31,17 +31,7 @@
                   </div>
                   <div class="row">
                     <div class="col-9">
-                      <form @submit.prevent="KeepKeep()">
-                        <div class="input-group">
-                          <select class="custom-select" id="inputGroupSelect04" v-model="editable.id">
-                            <option selected>Choose...</option>
-                            <option v-for="m in myVaults" :value="m.id">{{ m.name }}</option>
-                          </select>
-                          <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="submit">Save</button>
-                          </div>
-                        </div>
-                      </form>
+                      <!-- <button @click="UnkeepKeep()" class="btn btn-outline-dark">UnKeep</button> -->
                     </div>
                     <div v-if="keep?.creatorId" class="col-3" @click="SetActiveProfile(profile)">
                       <router-link :to="{ name: 'Profile', params: { profileId: keep?.creatorId } }">
@@ -93,26 +83,38 @@ export default {
       profile: computed(() => AppState.account),
       myVaults: computed(() => AppState.myVaults),
 
-      async KeepKeep() {
+      // async KeepKeep() {
+      //   try {
+      //     const vaultId = editable.value.id
+      //     const keepId = this.keep.id
+      //     await vaultKeepsService.KeepKeep(vaultId, keepId)
+      //   } catch (error) {
+      //     logger.log(error)
+      //     Pop.error(error, '[keeping this keep]')
+      //   }
+      // },
+
+      async UnkeepKeep() {
         try {
-          const vaultId = editable.value.id
-          const keepId = this.keep.id
-          await vaultKeepsService.KeepKeep(vaultId, keepId)
+          await keepsService
+          if (await Pop.confirm("Remove this Keep from the Vault?")) {
+            await vaultKeepsService.UnkeepKeep(vkId)
+          }
         } catch (error) {
           logger.log(error)
-          Pop.error(error, '[keeping this keep]')
+          Pop.error(error, '[unkeeping this keep]')
         }
       },
 
-      async SetActiveProfile(profile) {
-        try {
-          await profilesService.SetActiveProfile(profile);
-          logger.log('[hello]')
-        } catch (error) {
-          logger.log(error);
-          Pop.error(error, '[setting active profile]');
-        }
-      }
+      // async SetActiveProfile(profile) {
+      //   try {
+      //     await profilesService.SetActiveProfile(profile);
+      //     logger.log('[hello]')
+      //   } catch (error) {
+      //     logger.log(error);
+      //     Pop.error(error, '[setting active profile]');
+      //   }
+      // }
     }
   }
 }

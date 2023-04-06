@@ -5,10 +5,13 @@ public class VaultKeepsService
   private readonly VaultKeepsRepository _repo;
   private readonly VaultsService _vaultsService;
 
-  public VaultKeepsService(VaultKeepsRepository repo, VaultsService vaultsService)
+  private readonly KeepsService _keepsService;
+
+  public VaultKeepsService(VaultKeepsRepository repo, VaultsService vaultsService, KeepsService keepsService)
   {
     _repo = repo;
     _vaultsService = vaultsService;
+    _keepsService = keepsService;
   }
 
   internal VaultKeep CreateVaultKeep(VaultKeep vaultKeepData, string userId)
@@ -16,6 +19,10 @@ public class VaultKeepsService
     Vault vault = _vaultsService.GetVaultById(vaultKeepData.VaultId, userId);
     if (vault.CreatorId != userId) throw new Exception("Sorry, you can't put that there.");
     VaultKeep vaultKeep = _repo.CreateVaultKeep(vaultKeepData);
+    _keepsService.increaseKept(vaultKeepData.KeepId);
+    // TODO now go get the keep, similar to how you got the vault,
+    // increase kept count
+    // save it.
     return vaultKeep;
   }
 

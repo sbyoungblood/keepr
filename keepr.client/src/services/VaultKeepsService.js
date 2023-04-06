@@ -10,6 +10,10 @@ class VaultKeepsService {
     logger.log('[KEEPING THIS KEEP]', res.data)
     AppState.vaultKeeps.push(new VaultKeep(res.data))
   }
+
+  // async UnkeepKeep(vkId) {
+  //   const res =
+  // }
 }
 
 export const vaultKeepsService = new VaultKeepsService()

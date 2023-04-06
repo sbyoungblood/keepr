@@ -21,7 +21,7 @@
       <div class="col-8">
         <section class="bricks">
           <div v-for="k in keeps">
-            <KeepCard :keep="k" />
+            <VaultKeepCard :keep="k" />
           </div>
         </section>
       </div>
@@ -37,53 +37,54 @@ import Pop from "../utils/Pop";
 import { vaultsService } from "../services/VaultsService";
 import { computed, onMounted } from "vue";
 import { AppState } from "../AppState";
+import VaultKeepCard from "../components/VaultKeepCard.vue";
 
 export default {
   setup() {
-
-    const route = useRoute()
+    const route = useRoute();
     onMounted(() => {
-      GetActiveVault()
-      GetKeepsInVault()
-    })
-
+      GetActiveVault();
+      GetKeepsInVault();
+    });
     async function GetActiveVault() {
       try {
-        await vaultsService.GetActiveVault(route.params.vaultId)
-      } catch (error) {
-        logger.log(error)
-        Pop.error(error, '[getting active vault]')
+        await vaultsService.GetActiveVault(route.params.vaultId);
+      }
+      catch (error) {
+        logger.log(error);
+        Pop.error(error, "[getting active vault]");
       }
     }
-
     async function GetKeepsInVault() {
       try {
-        await vaultsService.GetKeepsInVault(route.params.vaultId)
-      } catch (error) {
-        logger.log(error)
-        Pop.error(error, '[getting keeps in vault]')
+        await vaultsService.GetKeepsInVault(route.params.vaultId);
+      }
+      catch (error) {
+        logger.log(error);
+        Pop.error(error, "[getting keeps in vault]");
       }
     }
-
     return {
       vault: computed(() => AppState.activeVault),
       keeps: computed(() => AppState.vaultKeeps),
       account: computed(() => AppState.account),
 
+
       async DeleteVault() {
         try {
-          if (await Pop.confirm('Are you sure you want to delete this Vault?')) {
-            await vaultsService.DeleteVault(route.params.vaultId)
-            Pop.success(`You deleted the vault.`)
+          if (await Pop.confirm("Are you sure you want to delete this Vault?")) {
+            await vaultsService.DeleteVault(route.params.vaultId);
+            Pop.success(`You deleted the vault.`);
           }
-        } catch (error) {
-          logger.log(error)
-          Pop.error(error, '[deleting vault]')
         }
-
+        catch (error) {
+          logger.log(error);
+          Pop.error(error, "[deleting vault]");
+        }
       }
-    }
-  }
+    };
+  },
+  components: { VaultKeepCard }
 }
 </script>
 

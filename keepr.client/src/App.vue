@@ -5,13 +5,14 @@
   <main>
     <router-view />
   </main>
-  <footer class="bg-dark text-light">
-    Made with 💖 by CodeWorks
+  <footer>
+    You're a keepr.
   </footer>
 
   <CreateKeepModal />
   <CreateVaultModal />
   <KeepDetailsModal />
+  <VaultKeepModal />
 </template>
 
 <script>
@@ -21,6 +22,7 @@ import Navbar from './components/Navbar.vue'
 import CreateKeepModal from "./components/CreateKeepModal.vue"
 import KeepDetailsModal from "./components/KeepDetailsModal.vue"
 import CreateVaultModal from "./components/CreateVaultModal.vue"
+import VaultKeepModal from "./components/VaultKeepModal.vue"
 
 export default {
   setup() {
@@ -28,7 +30,7 @@ export default {
       appState: computed(() => AppState)
     }
   },
-  components: { Navbar, CreateKeepModal, KeepDetailsModal, CreateVaultModal }
+  components: { Navbar, CreateKeepModal, KeepDetailsModal, CreateVaultModal, VaultKeepModal }
 }
 </script>
 <style lang="scss">
@@ -43,5 +45,8 @@ footer {
   display: grid;
   place-content: center;
   height: 32px;
+  margin-top: 25px;
+  background-color: whitesmoke;
+  color: black;
 }
 </style>
