@@ -31,16 +31,14 @@
                   </div>
                   <div class="row">
                     <div class="col-9">
-                      <form>
+                      <form @submit.prevent="KeepKeep()">
                         <div class="input-group">
-                          <select class="custom-select" id="inputGroupSelect04">
+                          <select class="custom-select" id="inputGroupSelect04" v-model="editable.id">
                             <option selected>Choose...</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <option v-for="m in myVaults" :value="m.id">{{ m.name }}</option>
                           </select>
                           <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button">Button</button>
+                            <button class="btn btn-outline-secondary" type="submit">Save</button>
                           </div>
                         </div>
                       </form>
@@ -63,18 +61,19 @@
 
 
 <script>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { profilesService } from "../services/ProfilesService.js"
 import { logger } from "../utils/Logger";
 import Pop from "../utils/Pop";
 import { AppState } from "../AppState";
 import { keepsService } from "../services/KeepsService";
 import { vaultsService } from "../services/VaultsService";
+import { vaultKeepsService } from "../services/VaultKeepsService"
 
 export default {
   props: { profile: { type: Object, required: true } },
   setup() {
-
+    const editable = ref({})
     onMounted(() => {
 
       // GetKeepById()
@@ -89,8 +88,21 @@ export default {
     // }
 
     return {
+      editable,
       keep: computed(() => AppState.activeKeep),
       profile: computed(() => AppState.account),
+      myVaults: computed(() => AppState.myVaults),
+
+      async KeepKeep() {
+        try {
+          const vaultId = editable.value.id
+          const keepId = this.keep.id
+          await vaultKeepsService.KeepKeep(vaultId, keepId)
+        } catch (error) {
+          logger.log(error)
+          Pop.error(error, '[keeping this keep]')
+        }
+      },
 
       async SetActiveProfile(profile) {
         try {

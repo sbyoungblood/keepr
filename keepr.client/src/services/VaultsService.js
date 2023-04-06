@@ -25,8 +25,10 @@ class VaultsService {
 
   async CreateVault(vaultData) {
     const res = await api.post('api/vaults', vaultData)
-    AppState.vaultKeeps.push(new Vault(res.data))
+    AppState.myVaults.push(new Vault(res.data))
   }
+
+  // FIXME vaultkeeps??
 
   async DeleteVault(vaultId) {
     const res = await api.delete('api/vaults/' + vaultId)
